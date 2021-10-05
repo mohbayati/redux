@@ -1,10 +1,9 @@
-import { createStore } from "redux";
+//import { createStore } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
 import reducer from "./bugs";
 
-export default function ConfigureStore() {
-  const store = createStore(
+export default function () {
+  return configureStore({
     reducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  );
-  return store;
+  });
 }
