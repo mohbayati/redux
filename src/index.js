@@ -2,10 +2,10 @@ import configureStore from "./store/configureStore";
 import * as actions from "./store/bugs";
 const store = configureStore();
 
-store.dispatch(actions.addBug("bug1"));
-store.dispatch(actions.addBug("bug2"));
-store.dispatch(actions.removeBug(1));
-store.dispatch(actions.resolveBug(2));
+store.dispatch(actions.addBug({ description: "bug1" }));
+store.dispatch(actions.addBug({ description: "bug2" }));
+store.dispatch(actions.removeBug({ id: 1 }));
+store.dispatch(actions.resolveBug({ id: 2 }));
 console.log(store.getState());
 
 // Build costum
