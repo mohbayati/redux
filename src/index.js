@@ -31,6 +31,12 @@ store.dispatch(
 const assigned = getBugsByUser(1)(store.getState());
 console.log(store.getState());
 console.log(assigned);
+store.dispatch({
+  type: "error",
+  payload: {
+    message: "an error accord",
+  },
+});
 // Build costum
 // import store from "./customStore";
 // import * as actions from "./actions";
