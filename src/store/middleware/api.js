@@ -15,7 +15,7 @@ const api =
     next(action);
     try {
       const response = await Axios.request({
-        baseURL: "http://localhost:9002/api",
+        baseURL: "http://localhost:9001/api",
         url,
         method,
         data,
