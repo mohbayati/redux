@@ -1,9 +1,6 @@
+import { apiCallBegin } from "./store/api";
+import { loadBugs } from "./store/bugs";
 import configureStore from "./store/configureStore";
 const store = configureStore();
-store.dispatch({
-  type: "apiCallBegin",
-  payload: {
-    url: "/bugs",
-    onSuccess: "bugReceived",
-  },
-});
+//store.dispatch(loadBugs);
+store.dispatch(loadBugs());

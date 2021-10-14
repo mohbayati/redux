@@ -6,11 +6,16 @@ const api =
   (next) =>
   async (action) => {
     if (action.type !== apiCallBegin.type) return next(action);
-    const { url, method, data, onSuccess, onError } = action.payload;
+    const { url, method, data, onStart, onSuccess, onError } = action.payload;
+
+    if (onStart)
+      dispatch({
+        type: onStart,
+      });
     next(action);
     try {
       const response = await Axios.request({
-        baseURL: "http://localhost:9001/api",
+        baseURL: "http://localhost:9002/api",
         url,
         method,
         data,
@@ -24,14 +29,13 @@ const api =
           payload: response.data,
         });
     } catch (error) {
-      //Gerneral
-      dispatch(apiCallFailed({ error }));
-
       if (onError)
         dispatch({
           type: onError,
-          payload: error,
+          payload: error.message,
         });
+      //Gerneral
+      dispatch(apiCallFailed(error.message));
     }
   };
 
