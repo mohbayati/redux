@@ -20,6 +20,8 @@ const slice = createSlice({
     bugRequestFaild(bugs, action) {
       bugs.loading = false;
     },
+    //command - event
+    //addBug - bugAdded
     addBug(bugs, action) {
       bugs.list.push(action.payload);
     },
@@ -31,7 +33,7 @@ const slice = createSlice({
       ),
     assignToUser: (bugs, action) => {
       return bugs.list.map((bug) =>
-        bug.id !== action.payload.id
+        bug.id !== action.payload.bugId
           ? bug
           : { ...bug, userId: action.payload.userId }
       );
@@ -72,6 +74,20 @@ export const addingBug = (bug) =>
     method: "post",
     data: bug,
     onSuccess: addBug.type,
+  });
+export const resolivingBug = (id) =>
+  apiCallBegin({
+    url: url + "/" + id,
+    method: "patch",
+    data: { resolved: true },
+    onSuccess: resolveBug.type,
+  });
+export const assigningToUser = (bugId, userId) =>
+  apiCallBegin({
+    url: url + "/" + bugId,
+    method: "patch",
+    data: { id: bugId, userId },
+    onSuccess: assignToUser.type,
   });
 //selector
 export const getUnresolvedBugs = createSelector(
