@@ -5,10 +5,10 @@ let lastId = 0;
 
 const slice = createSlice({
   name: "bugs",
-  initialState: [],
+  initialState: { list: [], loading: false, lastFetch: null },
   reducers: {
     addBug(bugs, action) {
-      bugs.push({
+      bugs.list.push({
         id: ++lastId,
         //userId: undefined,
         resolve: false,
@@ -16,13 +16,13 @@ const slice = createSlice({
       });
     },
     removeBug: (bugs, action) =>
-      bugs.filter((bug) => bug.id !== action.payload.id),
+      bugs.list.filter((bug) => bug.id !== action.payload.id),
     resolveBug: (bugs, action) =>
-      bugs.map((bug) =>
+      bugs.list.map((bug) =>
         bug.id !== action.payload.id ? bug : { ...bug, resolve: true }
       ),
     assignToUser: (bugs, action) => {
-      return bugs.map((bug) =>
+      return bugs.list.map((bug) =>
         bug.id !== action.payload.id
           ? bug
           : { ...bug, userId: action.payload.userId }
