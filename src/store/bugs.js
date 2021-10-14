@@ -21,12 +21,7 @@ const slice = createSlice({
       bugs.loading = false;
     },
     addBug(bugs, action) {
-      bugs.list.push({
-        id: ++lastId,
-        //userId: undefined,
-        resolve: false,
-        description: action.payload.description,
-      });
+      bugs.list.push(action.payload);
     },
     removeBug: (bugs, action) =>
       bugs.list.filter((bug) => bug.id !== action.payload.id),
@@ -71,7 +66,13 @@ export const loadBugs = () => (dispatch, getState) => {
     })
   );
 };
-
+export const addingBug = (bug) =>
+  apiCallBegin({
+    url,
+    method: "post",
+    data: bug,
+    onSuccess: addBug.type,
+  });
 //selector
 export const getUnresolvedBugs = createSelector(
   (state) => state.entites.bugs,
