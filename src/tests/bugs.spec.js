@@ -24,15 +24,32 @@ describe("bugsSlice", () => {
 });
 
 describe("Social or behaiveral test", () => {
-  it("should handle the addBug action", async () => {
+  let mock;
+  let store;
+  beforeEach(() => {
+    mock = new MockAdapter(Axios);
+    store = configureStore();
+  });
+  const bugSlice = () => {
+    return store.getState().entites.bugs;
+  };
+  it("should add the bug to store of it's saved to the server", async () => {
+    // Arrange
     const bug = { describe: "a" };
     const saveBug = { ...bug, id: 1 };
-
-    var mock = new MockAdapter(Axios);
     mock.onPost("/bugs").reply(200, saveBug);
-    const store = configureStore();
-
+    // Act
     await store.dispatch(addingBug(bug));
-    expect(store.getState().entites.bugs.list).toHaveLength(1);
+    // Assert
+    expect(bugSlice().list).toHaveLength(1);
+  });
+  it("should not add the bug to store of it's saved to the server", async () => {
+    // Arrange
+    const bug = { describe: "a" };
+    mock.onPost("/bugs").reply(500);
+    // Act
+    await store.dispatch(addingBug(bug));
+    // Assert
+    expect(bugSlice().list).toHaveLength(0);
   });
 });
