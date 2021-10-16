@@ -29,7 +29,7 @@ const slice = createSlice({
       bugs.list.filter((bug) => bug.id !== action.payload.id),
     resolveBug: (bugs, action) =>
       bugs.list.map((bug) =>
-        bug.id !== action.payload.id ? bug : { ...bug, resolve: true }
+        bug.id !== action.payload.id ? bug : { ...bug, resolved: true }
       ),
     assignToUser: (bugs, action) => {
       return bugs.list.map((bug) =>

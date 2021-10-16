@@ -1,7 +1,7 @@
 import Axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { apiCallBegin } from "../store/api";
-import { addBug, addingBug } from "../store/bugs";
+import { addBug, addingBug, resolivingBug } from "../store/bugs";
 import configureStore from "../store/configureStore";
 
 describe("bugsSlice", () => {
@@ -51,5 +51,16 @@ describe("Social or behaiveral test", () => {
     await store.dispatch(addingBug(bug));
     // Assert
     expect(bugSlice().list).toHaveLength(0);
+  });
+  it("should resolving a bag", async () => {
+    mock.onPatch("/bugs/1").reply(200, { id: 1, resolved: true });
+    mock.onPost("/bugs").reply(200, { id: 1 });
+
+    // Act
+    await store.dispatch(addingBug({ id: 1 }));
+    await store.dispatch(resolivingBug(1));
+    console.log(bugSlice());
+
+    expect(bugSlice()[0].resolved).toBe(true);
   });
 });
