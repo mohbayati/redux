@@ -1,7 +1,7 @@
 import Axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { apiCallBegin } from "../store/api";
-import { addBug, addingBug, resolivingBug } from "../store/bugs";
+import { addBug, addingBug, loadBugs, resolivingBug } from "../store/bugs";
 import configureStore from "../store/configureStore";
 
 describe("bugsSlice", () => {
@@ -62,5 +62,14 @@ describe("Social or behaiveral test", () => {
     console.log(bugSlice());
 
     expect(bugSlice()[0].resolved).toBe(true);
+  });
+
+  it("testing catch in fetching in bugs", async () => {
+    mock.onGet("/bugs").reply(200, { id: 1 });
+
+    await store.dispatch(loadBugs());
+    await store.dispatch(loadBugs());
+
+    expect(mock.history.get.length).toBe(1);
   });
 });
